@@ -1,0 +1,19 @@
+{% extends "tarefas/base.html" %}
+
+{% block titulo %}{{ titulo }}{% endblock %}
+
+{% block conteudo %}
+<div class="card">
+    <h2>{{ titulo }}</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit">Salvar</button>
+        <a href="{% url 'lista_tarefas' %}" class="btn">
+            Cancelar
+        </a>
+    </form>
+</div>
+{% endblock %}

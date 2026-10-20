@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block titulo %}Minhas Tarefas{% endblock %}</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+            color: #263238;
+        }
+
+        header {
+            background: #263b80;
+            color: white;
+            padding: 18px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header a {
+            color: white;
+            text-decoration: none;
+            margin-left: 15px;
+        }
+
+        main {
+            max-width: 900px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 24px;
+            border-radius: 10px;
+            box-shadow: 0 3px 12px #0000000d;
+            margin-bottom: 18px;
+        }
+
+        input, textarea, select {
+            box-sizing: border-box;
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button, .btn {
+            display: inline-block;
+            background: #263b80;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .excluir {
+            background: #c0392b;
+        }
+
+        .mensagem {
+            padding: 12px;
+            background: #dff5e5;
+            border-radius: 5px;
+        }
+
+        .erro {
+            color: #c0392b;
+        }
+
+        .acoes {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 15px;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <strong>Minhas Tarefas</strong>
+
+        <nav>
+            {% if user.is_authenticated %}
+                <span>Olá, {{ user.username }}!</span>
+                <a href="{% url 'lista_tarefas' %}">Início</a>
+
+                <form method="post" action="{% url 'logout' %}"
+                      style="display:inline">
+                    {% csrf_token %}
+                    <button type="submit">Sair</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}">Entrar</a>
+                <a href="{% url 'cadastro' %}">Cadastrar</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <main>
+        {% for message in messages %}
+            <p class="mensagem">{{ message }}</p>
+        {% endfor %}
+
+        {% block conteudo %}{% endblock %}
+    </main>
+</body>
+</html>

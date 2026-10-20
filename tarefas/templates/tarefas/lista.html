@@ -1,0 +1,46 @@
+{% extends "tarefas/base.html" %}
+
+{% block titulo %}Minhas tarefas{% endblock %}
+
+{% block conteudo %}
+<h2>Minhas tarefas</h2>
+
+<p>Organize suas atividades em um só lugar.</p>
+
+<a href="{% url 'criar_tarefa' %}" class="btn">
+    + Nova tarefa
+</a>
+
+<br><br>
+
+{% for tarefa in tarefas %}
+    <div class="card">
+        <h3>{{ tarefa.titulo }}</h3>
+
+        <p>{{ tarefa.descricao|default:"Sem descrição." }}</p>
+
+        <p><strong>Status:</strong> {{ tarefa.get_status_display }}</p>
+
+        <small>
+            Criada em {{ tarefa.data_criacao|date:"d/m/Y H:i" }}
+        </small>
+
+        <br><br>
+
+        <div class="acoes">
+            <a href="{% url 'editar_tarefa' tarefa.pk %}" class="btn">
+                Editar
+            </a>
+
+            <a href="{% url 'excluir_tarefa' tarefa.pk %}"
+               class="btn excluir">
+                Excluir
+            </a>
+        </div>
+    </div>
+{% empty %}
+    <div class="card">
+        <p>Você ainda não cadastrou nenhuma tarefa.</p>
+    </div>
+{% endfor %}
+{% endblock %}
